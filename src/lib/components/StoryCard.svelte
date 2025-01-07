@@ -11,7 +11,7 @@
 </script>
 
 <li>
-	<article class="flex items-center gap-4 py-6">
+	<article class="flex items-center gap-4 py-6 transition-colors hover:bg-orange-50">
 		<div
 			class="flex h-10 w-10 items-center justify-center rounded-full bg-stone-50 text-neutral-700"
 		>
@@ -50,7 +50,8 @@
 				<a href={`/articles/${story.id}`} class="group flex items-center gap-1">
 					<ChatIcon />
 					<span class="text-neutral-600 group-hover:underline">
-						{story.kids?.length || 0} comments
+						{story.kids?.length || 0}
+						{story.kids?.length === 1 ? "comment" : "comments"}
 					</span>
 				</a>
 			</div>

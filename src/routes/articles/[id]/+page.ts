@@ -72,6 +72,7 @@ export const load = async ({ data, fetch }) => {
 				return await response.json()
 			})
 		)
+
 		return pollParts
 	}
 

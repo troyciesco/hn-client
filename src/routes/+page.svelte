@@ -7,16 +7,20 @@
 	import ClockIcon from "$lib/icons/ClockIcon.svelte"
 	import ChatIcon from "$lib/icons/ChatIcon.svelte"
 	import StoryCard from "$lib/components/StoryCard.svelte"
+	import LoadingCard from "$lib/components/LoadingCard.svelte"
 
 	const { data }: { data: PageData } = $props()
 	let loadedStories = $state(data.stories)
 	let availableIds = $state(data.additionalIds)
+	let isLoading = $state(false)
 
 	const fetchMoreStories = async () => {
+		isLoading = true
 		const response = await fetch(`api/items?ids=${availableIds.slice(0, 20).join(",")}`)
 		const newStories = await response.json()
 		loadedStories = [...loadedStories, ...newStories]
 		availableIds = availableIds.slice(20)
+		isLoading = false
 	}
 </script>
 
@@ -34,8 +38,9 @@
 	</ul>
 	<button
 		onclick={fetchMoreStories}
-		class="flex items-center gap-[6px] rounded-[4px] border border-neutral-200 bg-white px-[14px] py-[10px] shadow-[0_1px_3px_rgba(0,0,0,0.1),0_1px_2px_rgba(0,0,0,0.06)]"
+		class="flex items-center gap-[6px] rounded-[4px] border border-neutral-200 bg-white px-[14px] py-[10px] shadow-[0_1px_3px_rgba(0,0,0,0.1),0_1px_2px_rgba(0,0,0,0.06)] disabled:bg-neutral-100 disabled:text-neutral-400"
+		disabled={isLoading}
 	>
-		<span>More</span> <span>↓</span>
+		<span>{isLoading ? "Fetching..." : "More"}</span> <span class={[isLoading && "hidden"]}>↓</span>
 	</button>
 </div>

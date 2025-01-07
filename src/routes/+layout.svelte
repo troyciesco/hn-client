@@ -68,8 +68,8 @@
 			</ul>
 		</nav>
 	</aside>
-	<div class="w-full px-16">
-		<main class="py-8">
+	<div class="flex min-h-screen w-full flex-col px-16">
+		<main class="grow py-8">
 			{@render children()}
 		</main>
 		<footer class="flex w-full items-center justify-between py-8">

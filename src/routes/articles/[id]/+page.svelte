@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Chart from "$lib/components/Chart.svelte"
 	import Comment from "$lib/components/Comment.svelte"
+	import ErrorCard from "$lib/components/ErrorCard.svelte"
+	import LoadingCard from "$lib/components/LoadingCard.svelte"
 	import { getRelativeTimeString } from "$lib/get-relative-time-string"
 	import ChatIcon from "$lib/icons/ChatIcon.svelte"
 	import ClockIcon from "$lib/icons/ClockIcon.svelte"
@@ -37,20 +39,21 @@
 	{#if data.item.text}
 		<div class="item-text pb-3 text-lg text-neutral-600">{@html data.item.text}</div>
 	{/if}
-	{#await data.pollParts}
-		<div>Loading poll parts...</div>
-	{:then pollParts}
-		<!-- <pre>{JSON.stringify(pollParts, null, 2)}</pre> -->
-		<Chart parts={pollParts} />
-	{:catch error}
-		<p>error loading poll: {error.message}</p>
-	{/await}
+	{#if data.item.type === "poll"}
+		{#await data.pollParts}
+			<LoadingCard />
+		{:then pollParts}
+			<Chart parts={pollParts} />
+		{:catch error}
+			<ErrorCard />
+		{/await}
+	{/if}
 	<hr class="mb-4 mt-10 h-px border-0 bg-neutral-200" />
 	<div>
 		<h2 class="text-lg font-medium leading-[28px]">{data.item.descendants || 0} comments</h2>
 	</div>
 	{#await data.comments}
-		Loading comments...
+		<LoadingCard />
 	{:then comments}
 		{#each comments as comment}
 			<div class="divide-y-4 border-b border-neutral-300">
@@ -58,7 +61,7 @@
 			</div>
 		{/each}
 	{:catch error}
-		<p>error loading comments: {error.message}</p>
+		<ErrorCard />
 	{/await}
 </div>
 
