@@ -24,7 +24,7 @@
 		<div>
 			<a
 				href={story.url ? story.url : `/articles/${story.id}`}
-				class="mb-2 flex items-center gap-1"
+				class="mb-2 flex flex-wrap items-center gap-1"
 			>
 				<h2 class="text-sm font-medium hover:underline">{story.title}</h2>
 				{#if story.url}
@@ -33,7 +33,7 @@
 					</span>
 				{/if}
 			</a>
-			<div class="flex items-center gap-3 text-xs">
+			<div class="flex flex-wrap items-center gap-3 text-xs">
 				<div class="flex items-center gap-1">
 					<PointIcon /> <span class="text-neutral-600">{story.score} points</span>
 				</div>
