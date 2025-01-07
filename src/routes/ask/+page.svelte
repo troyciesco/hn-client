@@ -12,8 +12,8 @@
 	let availableIds = $state(data.additionalIds)
 
 	const fetchMoreStories = async () => {
-		const response = await fetch(`api/stories?ids=${availableIds.slice(0, 20).join(",")}`)
-		const newStories = await response.json()
+		const res = await fetch(`api/items?ids=${availableIds.slice(0, 20).join(",")}`)
+		const newStories = await res.json()
 		loadedStories = [...loadedStories, ...newStories]
 		availableIds = availableIds.slice(20)
 	}

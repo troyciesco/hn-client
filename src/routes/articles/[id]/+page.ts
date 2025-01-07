@@ -1,6 +1,6 @@
 export const load = async ({ data, fetch }) => {
 	const fetchComments = async (ids: number[]) => {
-		const response = await fetch(`/api/stories?ids=${ids.join(",")}`)
+		const response = await fetch(`/api/items?ids=${ids.join(",")}`)
 		return response.json()
 	}
 

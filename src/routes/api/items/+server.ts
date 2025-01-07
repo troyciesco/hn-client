@@ -1,17 +1,17 @@
+import { HN_API } from "$lib/constants.js"
 import { json } from "@sveltejs/kit"
 
 export async function GET({ url }) {
 	const ids = url.searchParams.get("ids")?.split(",").map(Number) || []
-	const stories = await Promise.all(
+	const items = await Promise.all(
 		ids.map(async (id: number) => {
-			const storyUrl = `https://hacker-news.firebaseio.com/v0/item/${id}.json`
-			const storyResponse = await fetch(storyUrl)
-			if (!storyResponse.ok) {
+			const res = await fetch(HN_API.getItem(id))
+			if (!res.ok) {
 				throw new Error(`Failed to fetch story with ID: ${id}`)
 			}
-			return await storyResponse.json()
+			return await res.json()
 		})
 	)
 
-	return json(stories)
+	return json(items)
 }
