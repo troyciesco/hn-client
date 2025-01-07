@@ -77,8 +77,8 @@ export const load = async ({ data, fetch }) => {
 
 	return {
 		...data,
-		pollParts: getPollParts(data.item)
-		// comments: loadComments(data.item)
+		pollParts: getPollParts(data.item),
+		comments: loadComments(data.item)
 		// commentData: getCommentData(data.item)
 	}
 }

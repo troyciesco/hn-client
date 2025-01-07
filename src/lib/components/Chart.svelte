@@ -1,27 +1,29 @@
 <script>
-	let data = [
-		{ label: "United States", value: 564 },
-		{ label: "Canada", value: 477 },
-		{ label: "Singapore", value: 259 },
-		{ label: "Europe", value: 118 }
-	]
+	const { parts } = $props()
+	// let data = [
+	// 	{ label: "United States", value: 564 },
+	// 	{ label: "Canada", value: 477 },
+	// 	{ label: "Singapore", value: 259 },
+	// 	{ label: "Europe", value: 118 }
+	// ]
 
-	let maxValue = Math.max(...data.map((d) => d.value))
+	const sortedParts = parts.sort((a, b) => b.score - a.score)
+
+	// let maxValue = Math.max(...parts.map((part) => part.score))
+	let maxValue = sortedParts[0].score
 	let barHeight = 40 // thickness of each bar
 	let barSpacing = 10 // vertical space between bars
 	let maxBarPercent = 90
-	// That means the largest bar (564) occupies 85% of the width,
-	// and smaller bars scale accordingly.
 </script>
 
 <!-- The total SVG height depends on the number of bars, barHeight, and spacing -->
-<svg height={data.length * (barHeight + barSpacing) + barSpacing}>
-	{#each data as d, i}
+<svg height={parts.length * (barHeight + barSpacing) + barSpacing}>
+	{#each parts as part, i}
 		<!-- Y position for this bar -->
 		<rect
 			x="0"
 			y={i * (barHeight + barSpacing) + barSpacing}
-			width={(d.value / maxValue) * maxBarPercent + "%"}
+			width={(part.score / maxValue) * maxBarPercent + "%"}
 			height={barHeight}
 			fill="#FAC090"
 		/>
@@ -33,7 +35,7 @@
 			y={i * (barHeight + barSpacing) + barSpacing + barHeight / 2}
 			text-anchor="start"
 		>
-			{d.label}
+			{part.text}
 		</text>
 
 		<!-- Total all the way to the right; anchor at 'end' -->
@@ -43,8 +45,8 @@
 			y={i * (barHeight + barSpacing) + barSpacing + barHeight / 2}
 			text-anchor="end"
 		>
-			{d.value}
-			{d.value === 1 ? "point" : "points"}
+			{part.score}
+			{part.score === 1 ? "point" : "points"}
 		</text>
 	{/each}
 </svg>
@@ -52,10 +54,9 @@
 <style>
 	svg {
 		width: 100%; /* SVG scales horizontally */
-		background-color: #f4f4f4; /* optional background */
 	}
 	.label {
-		fill: #fff; /* label text color */
+		fill: #444; /* label text color */
 		font-size: 14px;
 		dominant-baseline: middle; /* vertically center text on bar */
 	}

@@ -41,7 +41,7 @@
 		<div>Loading poll parts...</div>
 	{:then pollParts}
 		<!-- <pre>{JSON.stringify(pollParts, null, 2)}</pre> -->
-		<Chart />
+		<Chart parts={pollParts} />
 	{:catch error}
 		<p>error loading poll: {error.message}</p>
 	{/await}
@@ -49,7 +49,7 @@
 	<div>
 		<h2 class="text-lg font-medium leading-[28px]">{data.item.descendants || 0} comments</h2>
 	</div>
-	<!-- {#await data.comments}
+	{#await data.comments}
 		Loading comments...
 	{:then comments}
 		{#each comments as comment}
@@ -59,7 +59,7 @@
 		{/each}
 	{:catch error}
 		<p>error loading comments: {error.message}</p>
-	{/await} -->
+	{/await}
 </div>
 
 <style>
