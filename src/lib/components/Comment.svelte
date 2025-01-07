@@ -44,9 +44,13 @@
 
 <style>
 	:global(.comment p) {
-		margin-top: 8px;
+		@apply mt-2;
 	}
 	:global(.comment a) {
 		@apply font-medium text-orange-500 underline;
+	}
+
+	:global(.comment pre) {
+		@apply my-2 max-w-2xl text-wrap bg-neutral-100;
 	}
 </style>
