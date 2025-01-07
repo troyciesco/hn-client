@@ -36,13 +36,13 @@
 	</div>
 	<hr class="mb-4 mt-10 h-px border-0 bg-neutral-200" />
 	<div>
-		<h2 class="mb-8 text-lg font-medium leading-[28px]">{data.item.descendants || 0} comments</h2>
+		<h2 class="text-lg font-medium leading-[28px]">{data.item.descendants || 0} comments</h2>
 	</div>
 	{#await data.comments}
 		Loading comments...
 	{:then comments}
 		{#each comments as comment}
-			<div class="divide-y-8 border-blue-500">
+			<div class="divide-y-4 border-b border-neutral-300">
 				<Comment {comment} />
 			</div>
 		{/each}

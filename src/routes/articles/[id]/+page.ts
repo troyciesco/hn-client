@@ -11,8 +11,11 @@ export const load = async ({ data, fetch }) => {
 
 		const comments: any[] = await fetchComments(item.kids)
 
+		// Filter out deleted/dead comments
+		const validComments = comments.filter((comment) => !comment.deleted && !comment.dead)
+
 		const commentsWithReplies = await Promise.all(
-			comments.map(async (comment) => {
+			validComments.map(async (comment) => {
 				const replies = await loadComments(comment)
 				return {
 					...comment,
