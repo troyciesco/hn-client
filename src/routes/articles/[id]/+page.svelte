@@ -1,5 +1,7 @@
 <script lang="ts">
+	import Chart from "$lib/components/Chart.svelte"
 	import Comment from "$lib/components/Comment.svelte"
+	import { getRelativeTimeString } from "$lib/get-relative-time-string"
 	import ChatIcon from "$lib/icons/ChatIcon.svelte"
 	import ClockIcon from "$lib/icons/ClockIcon.svelte"
 	import PenIcon from "$lib/icons/PenIcon.svelte"
@@ -24,9 +26,7 @@
 			</div>
 			<div class="flex items-center gap-1">
 				<ClockIcon />
-				<span class="text-neutral-600"
-					>{Math.floor((Date.now() / 1000 - data.item.time) / 60)} minutes ago</span
-				>
+				<span class="text-neutral-600">{getRelativeTimeString(data.item.time * 1000)}</span>
 			</div>
 			<a href={`/articles/${data.item.id}`} class="flex items-center gap-1">
 				<ChatIcon />
@@ -34,11 +34,22 @@
 			</a>
 		</div>
 	</div>
+	{#if data.item.text}
+		<div class="item-text pb-3 text-lg text-neutral-600">{@html data.item.text}</div>
+	{/if}
+	{#await data.pollParts}
+		<div>Loading poll parts...</div>
+	{:then pollParts}
+		<!-- <pre>{JSON.stringify(pollParts, null, 2)}</pre> -->
+		<Chart />
+	{:catch error}
+		<p>error loading poll: {error.message}</p>
+	{/await}
 	<hr class="mb-4 mt-10 h-px border-0 bg-neutral-200" />
 	<div>
 		<h2 class="text-lg font-medium leading-[28px]">{data.item.descendants || 0} comments</h2>
 	</div>
-	{#await data.comments}
+	<!-- {#await data.comments}
 		Loading comments...
 	{:then comments}
 		{#each comments as comment}
@@ -48,5 +59,14 @@
 		{/each}
 	{:catch error}
 		<p>error loading comments: {error.message}</p>
-	{/await}
+	{/await} -->
 </div>
+
+<style>
+	:global(.item-text p) {
+		@apply mt-2;
+	}
+	:global(.item-text a) {
+		@apply font-medium text-orange-500 underline;
+	}
+</style>

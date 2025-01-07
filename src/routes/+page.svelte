@@ -6,6 +6,7 @@
 	import PenIcon from "$lib/icons/PenIcon.svelte"
 	import ClockIcon from "$lib/icons/ClockIcon.svelte"
 	import ChatIcon from "$lib/icons/ChatIcon.svelte"
+	import StoryCard from "$lib/components/StoryCard.svelte"
 
 	const { data }: { data: PageData } = $props()
 	let loadedStories = $state(data.stories)
@@ -28,48 +29,7 @@
 	</div>
 	<ul class="space-y-2">
 		{#each loadedStories as story}
-			<li>
-				<article class="flex items-center gap-4 py-6">
-					<div
-						class="flex h-10 w-10 items-center justify-center rounded-full bg-stone-50 text-neutral-700"
-					>
-						{#if story.url}
-							<ExternalIcon />
-						{:else}
-							<StoryIcon />
-						{/if}
-					</div>
-					<div>
-						<div class="mb-2 flex items-center gap-1">
-							<h2 class="text-sm font-medium">{story.title}</h2>
-							{#if story.url}
-								<span class="text-xs text-neutral-600">({new URL(story.url).host})</span>
-							{/if}
-						</div>
-						<div class="flex items-center gap-3 text-xs">
-							<div class="flex items-center gap-1">
-								<PointIcon /> <span class="text-neutral-600">{story.score} points</span>
-							</div>
-							<div class="flex items-center gap-1">
-								<PenIcon />
-								<span class="text-neutral-600">
-									by <span class="font-medium text-orange-500">{story.by}</span>
-								</span>
-							</div>
-							<div class="flex items-center gap-1">
-								<ClockIcon />
-								<span class="text-neutral-600"
-									>{Math.floor((Date.now() / 1000 - story.time) / 60)} minutes ago</span
-								>
-							</div>
-							<a href={`/articles/${story.id}`} class="flex items-center gap-1">
-								<ChatIcon />
-								<span class="text-neutral-600">{story.kids?.length || 0} comments</span>
-							</a>
-						</div>
-					</div>
-				</article>
-			</li>
+			<StoryCard {story} />
 		{/each}
 	</ul>
 	<button

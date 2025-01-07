@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from "$app/state"
+	import { getRelativeTimeString } from "$lib/get-relative-time-string"
 	import Comment from "./Comment.svelte"
 	let { comment, isLastChild = false } = $props()
 
@@ -16,7 +17,11 @@
 				]}
 			></span>
 		{/if}
-		<div class="mb-3 text-sm font-semibold">{comment.by}</div>
+		<div class="mb-3 flex items-center gap-1 text-sm">
+			<span class="font-semibold">{comment.by}</span>
+			<span class="text-neutral-600">•</span>
+			<span class="text-neutral-600">{getRelativeTimeString(comment.time * 1000)}</span>
+		</div>
 	</div>
 	<div class="comment pb-3 text-sm">{@html comment.text}</div>
 	{#each comment.replies as reply, index}

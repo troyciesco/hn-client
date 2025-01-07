@@ -1,3 +1,5 @@
+import { HN_API } from "$lib/constants.js"
+
 export const load = async ({ data, fetch }) => {
 	const fetchComments = async (ids: number[]) => {
 		const response = await fetch(`/api/items?ids=${ids.join(",")}`)
@@ -56,9 +58,27 @@ export const load = async ({ data, fetch }) => {
 	// 	return { comments, count }
 	// }
 
+	const getPollParts = async (item: { type: string; parts?: number[] }) => {
+		if (item.type !== "poll" || !item.parts || item.parts.length === 0) {
+			return []
+		}
+
+		const pollParts = await Promise.all(
+			item.parts.map(async (id: number) => {
+				const response = await fetch(HN_API.getItem(id))
+				if (!response.ok) {
+					throw new Error(`Failed to fetch part with ID: ${id}`)
+				}
+				return await response.json()
+			})
+		)
+		return pollParts
+	}
+
 	return {
 		...data,
-		comments: loadComments(data.item)
+		pollParts: getPollParts(data.item)
+		// comments: loadComments(data.item)
 		// commentData: getCommentData(data.item)
 	}
 }
