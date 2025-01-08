@@ -12,7 +12,7 @@ export function hasUrlField(item: ParentItem) {
 	return hasField<Story | Job, "url", string>(
 		item,
 		"url",
-		(val): val is string => val !== "" && typeof val === "string"
+		(val): val is string => typeof val === "string"
 	)
 }
 

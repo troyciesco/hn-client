@@ -21,6 +21,7 @@
 		<div
 			class="flex h-10 w-10 items-center justify-center rounded-full bg-stone-50 text-neutral-700"
 		>
+			<!-- @TODO: this sometimes errors saying that it can't construct a url, which is odd... -->
 			{#if hasUrl}
 				<ExternalIcon />
 			{:else}
