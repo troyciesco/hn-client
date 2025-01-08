@@ -1,4 +1,5 @@
 <script lang="ts">
+	import "@fontsource-variable/noto-sans"
 	import "../app.css"
 	import logo from "$lib/images/logo.svg"
 	import { page } from "$app/state"
@@ -12,6 +13,11 @@
 	let { children } = $props()
 	let showMenu = $state(false)
 </script>
+
+<svelte:head>
+	<title>HN Client{page.data.title ? ` | ${page.data.title}` : ""}</title>
+	<meta name="description" content="A Hacker News client built with SvelteKit by Troy Ciesco" />
+</svelte:head>
 
 <div class="relative flex min-h-screen flex-col text-neutral-900 md:flex-row">
 	<div
