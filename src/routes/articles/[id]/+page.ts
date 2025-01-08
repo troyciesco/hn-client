@@ -1,4 +1,5 @@
 import { HN_API } from "$lib/constants.js"
+import type { Comment, PollPart } from "$lib/types"
 
 export const load = async ({ data, fetch }) => {
 	const fetchComments = async (ids: number[]) => {
@@ -6,12 +7,12 @@ export const load = async ({ data, fetch }) => {
 		return response.json()
 	}
 
-	const loadComments = async (item: { kids?: number[] }): Promise<any[]> => {
+	const loadComments = async (item: { kids?: number[] }): Promise<Comment[]> => {
 		if (!item.kids || item.kids.length === 0) {
 			return []
 		}
 
-		const comments: any[] = await fetchComments(item.kids)
+		const comments: Comment[] = await fetchComments(item.kids)
 
 		// Filter out deleted/dead comments
 		const validComments = comments.filter((comment) => !comment.deleted && !comment.dead)
@@ -63,7 +64,7 @@ export const load = async ({ data, fetch }) => {
 			return []
 		}
 
-		const pollParts = await Promise.all(
+		const pollParts: PollPart[] = await Promise.all(
 			item.parts.map(async (id: number) => {
 				const response = await fetch(HN_API.getItem(id))
 				if (!response.ok) {

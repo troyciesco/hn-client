@@ -2,7 +2,13 @@
 	import { page } from "$app/state"
 	import { getRelativeTimeString } from "$lib/get-relative-time-string"
 	import Comment from "./Comment.svelte"
-	let { comment, isLastChild = false } = $props()
+	import type { Comment as CommentType } from "$lib/types"
+	type Props = {
+		comment: CommentType
+		isLastChild?: boolean
+	}
+
+	let { comment, isLastChild = false }: Props = $props()
 
 	const isParent = parseInt(page.params.id) === comment.parent
 </script>

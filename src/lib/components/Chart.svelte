@@ -1,9 +1,8 @@
 <script lang="ts">
+	import type { PollPart } from "$lib/types"
+
 	type Props = {
-		parts: {
-			text: string
-			score: number
-		}[]
+		parts: PollPart[]
 	}
 
 	const { parts }: Props = $props()

@@ -4,6 +4,7 @@ const buildUrl = (path: string) => `${HN_API_BASE_URL}${path}`
 
 export const HN_API = {
 	getItem: (id: number) => buildUrl(`/item/${id}.json`),
+	// @TODO: the below are more accurately "getIdsOfNewStories" or similar
 	getNewStories: () => buildUrl("/newstories.json"),
 	getAskStories: () => buildUrl("/askstories.json"),
 	getShowStories: () => buildUrl("/showstories.json"),

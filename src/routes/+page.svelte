@@ -1,16 +1,9 @@
 <script lang="ts">
 	import type { PageData } from "./$types"
-	import ExternalIcon from "$lib/icons/ExternalIcon.svelte"
-	import StoryIcon from "$lib/icons/StoryIcon.svelte"
-	import PointIcon from "$lib/icons/PointIcon.svelte"
-	import PenIcon from "$lib/icons/PenIcon.svelte"
-	import ClockIcon from "$lib/icons/ClockIcon.svelte"
-	import ChatIcon from "$lib/icons/ChatIcon.svelte"
-	import StoryCard from "$lib/components/StoryCard.svelte"
-	import LoadingCard from "$lib/components/LoadingCard.svelte"
+	import ItemCard from "$lib/components/ItemCard.svelte"
 
 	const { data }: { data: PageData } = $props()
-	let loadedStories = $state(data.stories)
+	let loadedItems = $state(data.stories)
 	let availableIds = $state(data.additionalIds)
 	let isLoading = $state(false)
 
@@ -18,7 +11,7 @@
 		isLoading = true
 		const response = await fetch(`api/items?ids=${availableIds.slice(0, 20).join(",")}`)
 		const newStories = await response.json()
-		loadedStories = [...loadedStories, ...newStories]
+		loadedItems = [...loadedItems, ...newStories]
 		availableIds = availableIds.slice(20)
 		isLoading = false
 	}
@@ -32,8 +25,8 @@
 		</p>
 	</div>
 	<ul class="space-y-2">
-		{#each loadedStories as story}
-			<StoryCard {story} />
+		{#each loadedItems as item}
+			<ItemCard {item} />
 		{/each}
 	</ul>
 	<button

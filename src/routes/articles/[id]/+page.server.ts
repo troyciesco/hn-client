@@ -1,4 +1,5 @@
 import { HN_API } from "$lib/constants"
+import type { ParentItem } from "$lib/types"
 import type { PageServerLoad } from "./$types"
 // const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -13,7 +14,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 	if (!res.ok) {
 		throw new Error(`Failed to fetch story with ID: ${params.id}`)
 	}
-	const item = await res.json()
+	const item: ParentItem = await res.json()
 
 	// const loadComments = async (item: any) => {
 	// 	if (!item.kids || item.kids.length === 0) {
