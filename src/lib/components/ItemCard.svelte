@@ -6,12 +6,14 @@
 	import PenIcon from "$lib/icons/PenIcon.svelte"
 	import PointIcon from "$lib/icons/PointIcon.svelte"
 	import StoryIcon from "$lib/icons/StoryIcon.svelte"
+	import { hasUrlField } from "$lib/type-utils"
 	import type { ParentItem } from "$lib/types"
 
 	type Props = {
 		item: ParentItem
 	}
 	const { item }: Props = $props()
+	const hasUrl = hasUrlField(item)
 </script>
 
 <li>
@@ -19,7 +21,7 @@
 		<div
 			class="flex h-10 w-10 items-center justify-center rounded-full bg-stone-50 text-neutral-700"
 		>
-			{#if item.url}
+			{#if hasUrl}
 				<ExternalIcon />
 			{:else}
 				<StoryIcon />
@@ -27,11 +29,11 @@
 		</div>
 		<div>
 			<a
-				href={item.url ? item.url : `/articles/${item.id}`}
+				href={hasUrl ? item.url : `/articles/${item.id}`}
 				class="mb-2 flex flex-wrap items-center gap-1"
 			>
 				<h2 class="text-sm font-medium hover:underline">{item.title}</h2>
-				{#if item.url}
+				{#if hasUrl}
 					<span class="group text-xs text-neutral-600">
 						(<span class="group-hover:underline">{new URL(item.url).host}</span>)
 					</span>

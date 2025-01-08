@@ -8,39 +8,44 @@
 	import ClockIcon from "$lib/icons/ClockIcon.svelte"
 	import PenIcon from "$lib/icons/PenIcon.svelte"
 	import PointIcon from "$lib/icons/PointIcon.svelte"
+	import { hasDescendantsField } from "$lib/type-utils"
 	import type { PageData } from "./$types"
 
 	const { data }: { data: PageData } = $props()
+	const { item, comments, pollParts } = data
+	const hasDescendants = hasDescendantsField(item)
 </script>
 
 <div class="max-w-7xl">
 	<div class=" pb-10">
-		<h1 class="mb-4 text-balance text-4xl font-semibold leading-10">{data.item.title}</h1>
+		<h1 class="mb-4 text-balance text-4xl font-semibold leading-10">{item.title}</h1>
 		<div class="flex items-center gap-3 text-sm">
 			<div class="flex items-center gap-1">
-				<PointIcon /> <span class="text-neutral-600">{data.item.score} points</span>
+				<PointIcon /> <span class="text-neutral-600">{item.score} points</span>
 			</div>
 			<div class="flex items-center gap-1">
 				<PenIcon />
 				<span class="text-neutral-600">
-					by <span class="font-medium text-orange-500">{data.item.by}</span>
+					by <span class="font-medium text-orange-500">{item.by}</span>
 				</span>
 			</div>
 			<div class="flex items-center gap-1">
 				<ClockIcon />
-				<span class="text-neutral-600">{getRelativeTimeString(data.item.time * 1000)}</span>
+				<span class="text-neutral-600">{getRelativeTimeString(item.time * 1000)}</span>
 			</div>
-			<a href={`/articles/${data.item.id}`} class="flex items-center gap-1">
-				<ChatIcon />
-				<span class="text-neutral-600">{data.item.descendants || 0} comments</span>
-			</a>
+			{#if hasDescendants}
+				<a href={`/articles/${item.id}`} class="flex items-center gap-1">
+					<ChatIcon />
+					<span class="text-neutral-600">{item.descendants || 0} comments</span>
+				</a>
+			{/if}
 		</div>
 	</div>
-	{#if data.item.text}
-		<div class="item-text pb-3 text-lg text-neutral-600">{@html data.item.text}</div>
+	{#if item.text}
+		<div class="item-text pb-3 text-lg text-neutral-600">{@html item.text}</div>
 	{/if}
-	{#if data.item.type === "poll"}
-		{#await data.pollParts}
+	{#if item.type === "poll"}
+		{#await pollParts}
 			<LoadingCard />
 		{:then pollParts}
 			<Chart parts={pollParts} />
@@ -49,20 +54,22 @@
 		{/await}
 	{/if}
 	<hr class="mb-4 mt-10 h-px border-0 bg-neutral-200" />
-	<div>
-		<h2 class="text-lg font-medium leading-[28px]">{data.item.descendants || 0} comments</h2>
-	</div>
-	{#await data.comments}
-		<LoadingCard />
-	{:then comments}
-		{#each comments as comment}
-			<div class="divide-y-4 border-b border-neutral-300">
-				<Comment {comment} />
-			</div>
-		{/each}
-	{:catch error}
-		<ErrorCard />
-	{/await}
+	{#if hasDescendants}
+		<div>
+			<h2 class="text-lg font-medium leading-[28px]">{item.descendants || 0} comments</h2>
+		</div>
+		{#await comments}
+			<LoadingCard />
+		{:then comments}
+			{#each comments as comment}
+				<div class="divide-y-4 border-b border-neutral-300">
+					<Comment {comment} />
+				</div>
+			{/each}
+		{:catch error}
+			<ErrorCard />
+		{/await}
+	{/if}
 </div>
 
 <style>
