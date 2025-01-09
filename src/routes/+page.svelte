@@ -29,11 +29,14 @@
 			<ItemCard {item} />
 		{/each}
 	</ul>
-	<button
-		onclick={fetchMoreStories}
-		class="flex items-center gap-[6px] rounded-[4px] border border-neutral-200 bg-white px-[14px] py-[10px] shadow-[0_1px_3px_rgba(0,0,0,0.1),0_1px_2px_rgba(0,0,0,0.06)] disabled:bg-neutral-100 disabled:text-neutral-400"
-		disabled={isLoading}
-	>
-		<span>{isLoading ? "Fetching..." : "More"}</span> <span class={[isLoading && "hidden"]}>↓</span>
-	</button>
+	{#if availableIds && availableIds.length > 0}
+		<button
+			onclick={fetchMoreStories}
+			class="flex items-center gap-[6px] rounded-[4px] border border-neutral-200 bg-white px-[14px] py-[10px] shadow-[0_1px_3px_rgba(0,0,0,0.1),0_1px_2px_rgba(0,0,0,0.06)] disabled:bg-neutral-100 disabled:text-neutral-400"
+			disabled={isLoading}
+		>
+			<span>{isLoading ? "Fetching..." : "More"}</span>
+			<span class={[isLoading && "hidden"]}>↓</span>
+		</button>
+	{/if}
 </div>
